@@ -2,12 +2,13 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "Ethereum monitoring",
-  "main": "app.js",
+  "main": "./src/app.js",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^16.4.7",
     "express": "^4.21.2"
   },
   "scripts": {
-    "start": "node app.js"
+    "start": "node ./src/app.mjs"
   }
 }
