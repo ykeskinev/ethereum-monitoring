@@ -1,6 +1,30 @@
-class DatabaseService {
-    constructor() {
+import { Sequelize } from 'sequelize'
 
+class DatabaseService {
+    
+    #client
+
+    constructor() {
+        
+    }
+
+    async init() {
+        try {
+            this.#client = new Sequelize(
+                process.env.POSTGRES_DB,
+                process.env.POSTGRES_USER,
+                process.env.POSTGRES_PASSWORD,
+                {
+                    host: process.env.POSTGRES_HOST,
+                    dialect: 'postgres',
+                    port: process.env.POSTGRES_PORT
+                }
+            )
+            await this.#client.authenticate();
+            console.log('Connection has been established successfully.');
+          } catch (error) {
+            console.error('Unable to connect to the database:', error);
+          }
     }
 
     async query() {
