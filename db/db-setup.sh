@@ -1,4 +1,6 @@
-. ./.env 
+# run the db
+sudo docker compose up -d
+. ./db/.env 
 export PGPASSWORD=$POSTGRES_PASSWORD
 # create admin user and database for the project
 psql --set=pgpassword=$PGPASSWORD -h $POSTGRES_HOST -U $POSTGRES_USER -f ./db/db_create.sql
