@@ -1,0 +1,28 @@
+@startuml "Conceptual DB model"
+    class "Configuration" as configuration {
+        id
+        name
+        rules
+    }
+
+    class "Rule" as rule {
+        id
+        name
+        field
+        operator
+        value
+    }
+
+    class "Transaction" as transaction {
+        id
+        from
+        to
+        ...
+        configuration_id
+    }
+
+    configuration "1" -- "*" rule
+    configuration "1" -- "*" transaction
+    
+
+@enduml
