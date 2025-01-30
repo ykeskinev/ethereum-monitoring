@@ -5,21 +5,20 @@ class DatabaseService {
     #client
 
     constructor() {
-        
+        this.#client = new Sequelize(
+            process.env.POSTGRES_DB,
+            process.env.POSTGRES_USER,
+            process.env.POSTGRES_PASSWORD,
+            {
+                host: process.env.POSTGRES_HOST,
+                dialect: 'postgres',
+                port: process.env.POSTGRES_PORT
+            }
+        )
     }
 
     async init() {
         try {
-            this.#client = new Sequelize(
-                process.env.POSTGRES_DB,
-                process.env.POSTGRES_USER,
-                process.env.POSTGRES_PASSWORD,
-                {
-                    host: process.env.POSTGRES_HOST,
-                    dialect: 'postgres',
-                    port: process.env.POSTGRES_PORT
-                }
-            )
             await this.#client.authenticate();
             console.log('Connection has been established successfully.');
           } catch (error) {
