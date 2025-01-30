@@ -1,0 +1,1 @@
+\ir ./tables/001_rules_table.sql;
