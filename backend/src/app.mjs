@@ -1,5 +1,4 @@
 import express from 'express'
-import 'body-parser' from 'body-parser'
 import { dynamicConfigurationController } from './domain/dynamic-configuration/dynamic-configuration.controller.mjs'
 import { transactionController } from './domain/transaction/transaction.controller.mjs'
 import { dbService } from './providers/database.service.mjs'
@@ -27,8 +26,7 @@ const processes = [
 bootstrap()
 
 async function bootstrap() {
-  app.use(express.json());
-  app.use()
+  app.use(express.json())
 
   //init all controllers
   await Promise.all(controllers.map(controller => controller.init(app)))
@@ -44,7 +42,7 @@ async function bootstrap() {
   ethereumScannerProcess.subscribe(dynamicConfigurationHandler)
   
   //start all Processes
-  await Promise.all(processes.map(process => process.start()))
+  await Promise.all(processes.map(process => process.init()))
 
   //init providers
   await dbService.init()
