@@ -1,5 +1,6 @@
 import { dbService  } from "../../providers/database.service.mjs";
 import { DynamicConfiguration } from "./dynamic-configuration.model.mjs";
+import { BadRequestError, InternalError } from "../../utils/error-handler.mjs";
 
 class DynamicConfigurationService {
     
@@ -7,47 +8,52 @@ class DynamicConfigurationService {
 
     }
 
-    async createConfiguration() {
-        const result = await DynamicConfiguration.create(
-            {
-                name: "Detect Expensive Transactions 9",
-                rules: [
-                    {
-                        name: 'Expensive Transactions',
-                        field: 'gas',
-                        operator: '>',
-                        check_value: '10000'
-                    },
-                    {
-                        name: 'To Our address',
-                        field: 'to',
-                        operator: '=',
-                        check_value: 'dasdafafaffs'
-                    },
-                ]
-            },
-            {
-                include: [DynamicConfiguration.rules],
-            },
-        )
-
-      
-        console.log('result', result)
-        return result.dataValues
+    async createConfiguration(payload) {
+        try { 
+            const result = await DynamicConfiguration.create(
+                payload,
+                {
+                    include: [DynamicConfiguration.rules],
+                },
+            )
+    
+            return result.dataValues
+        } catch(e) {
+            throw new BadRequestError('configuration/create-failed', e.message)
+        }
+        
     }
 
     async getConfigurations() {
-        // const result = await dbService.query()
-        return [new DynamicConfiguration()]
+        try {
+            const result = await DynamicConfiguration.findAll( {
+                include: [DynamicConfiguration.rules],
+            })
+    
+            return [result]
+        } catch(e) {
+            throw new InternalError('configuration/get-all-failed', e.message)
+        }
     }
 
     async getConfiguration(id) {
-        const result = await dbService.query()
-        return result
+        try {
+            const result = await DynamicConfiguration.findOne(
+                id,
+                {
+                    include: [DynamicConfiguration.rules],
+                }
+            )
+
+            return result
+        } catch(e) {
+            throw new InternalError('configuration/get-failed', e.message) 
+        }
     }
 
     async updateConfiguration() {
         const result = await dbService.query()
+
         return result
     }
 
@@ -56,4 +62,4 @@ class DynamicConfigurationService {
     }
 }
 
-export const dynamicConfigurationService = new DynamicConfigurationService
+export const dynamicConfigurationService = new DynamicConfigurationService()

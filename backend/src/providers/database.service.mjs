@@ -19,11 +19,15 @@ class DatabaseService {
 
     async init() {
         try {
-            await this.#client.authenticate();
-            console.log('Connection has been established successfully.');
+            await this.#client.authenticate()
+            console.log('Connection has been established successfully.')
           } catch (error) {
-            console.error('Unable to connect to the database:', error);
+            console.error('Unable to connect to the database:', error)
           }
+    }
+
+    getClient() {
+        return this.#client
     }
 
     async query() {
