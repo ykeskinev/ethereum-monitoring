@@ -1,3 +1,5 @@
+ALTER TABLE IF EXISTS ethereum_transaction DROP CONSTRAINT unique_tx_hash;
+
 DROP TABLE IF EXISTS ethereum_transaction CASCADE;
 
 CREATE TABLE ethereum_transaction (
@@ -15,5 +17,6 @@ CREATE TABLE ethereum_transaction (
     transaction_index INT NOT NULL,
     timestamp TIMESTAMP DEFAULT NOW(),
     configuration_id INT REFERENCES dynamic_configuration(id),
+    block_id INT REFERENCES ethereum_block(id),
     CONSTRAINT unique_tx_hash UNIQUE (tx_hash)
 );
