@@ -1,5 +1,5 @@
 import { dbService  } from "../../providers/database.service.mjs";
-import { Transaction } from "./transaction.model.mjs";
+import { EthereumBlock, EthereumTransaction } from "./transaction.model.mjs";
 
 class TransactionService {
     
@@ -9,12 +9,30 @@ class TransactionService {
 
     async getTransactions() {
         // const result = await dbService.query()
-        return [new Transaction()]
+        return []
     }
 
     async getTransaction(id) {
         const result = await dbService.query()
         return result
+    }
+
+    async createBlock(rawBlock) {
+        const result = await EthereumBlock.create(EthereumBlock.mapFromRaw(rawBlock))
+
+        return result
+    }
+
+    async getHighestBlockNumber() {
+        const result = await EthereumBlock.max('number')
+        if (!result) {
+            return 0
+        }
+        return result
+    }
+
+    async createBatchTransactions(rawTransactions, blockId) {
+        console.log('Will create transactions', rawTransactions.length, blockId)
     }
 
 }
