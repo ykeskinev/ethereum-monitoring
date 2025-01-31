@@ -1,15 +1,5 @@
-import { Sequelize, DataTypes, Model } from 'sequelize'
-
-const sequelize = new Sequelize(
-    process.env.POSTGRES_DB,
-    process.env.POSTGRES_USER,
-    process.env.POSTGRES_PASSWORD,
-    {
-        host: process.env.POSTGRES_HOST,
-        dialect: 'postgres',
-        port: process.env.POSTGRES_PORT
-    }
-)
+import { DataTypes, Model } from 'sequelize'
+import { dbService } from '../../providers/database.service.mjs'
 
 export class DynamicConfiguration extends Model {
     #rules = []
@@ -32,7 +22,7 @@ DynamicConfiguration.init(
   },
   {
     // Other model options go here
-    sequelize, // We need to pass the connection instance
+    sequelize: dbService.getClient(), // We need to pass the connection instance
     modelName: 'dynamic_configuration', // We need to choose the model name
     tableName: 'dynamic_configuration',
     createdAt: 'created_at',
@@ -66,8 +56,8 @@ Rule.init(
   },
   {
     // Other model options go here
-    sequelize, // We need to pass the connection instance
-    modelName: 'rule', // We need to choose the model name
+    sequelize: dbService.getClient(),
+    modelName: 'rule',
     tableName: 'rule',
     createdAt: 'created_at',
     updatedAt: 'updated_at'
