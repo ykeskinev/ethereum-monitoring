@@ -36,7 +36,7 @@ async function bootstrap() {
   ethereumScannerProcess.subscribe(dynamicConfigurationHandler)
   
   //start all Processes
-  // await Promise.all(processes.map(process => process.start()))
+  await Promise.all(processes.map(process => process.start()))
 
   //init providers
   await dbService.init()
